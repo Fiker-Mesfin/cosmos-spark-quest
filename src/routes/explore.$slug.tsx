@@ -84,7 +84,7 @@ function ObjectPage() {
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
           <h2 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-accent">Key facts</h2>
           <ul className="mt-5 space-y-3">
-            {object.facts.map((f, i) => (
+          {object.facts.map((f: string, i: number) => (
               <li key={i} className="flex gap-3 text-base leading-relaxed text-foreground/90">
                 <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cosmic-gradient" />
                 <span>{f}</span>
