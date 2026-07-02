@@ -11,6 +11,12 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
 
 function NotFoundComponent() {
   return (
@@ -77,14 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Cosmos Explorer — Interactive Space Learning Platform" },
+      { name: "description", content: "Explore the universe in 3D. Interactive solar system, planets, black holes, galaxies and space missions — learn astronomy through animation and visualization." },
+      { name: "author", content: "Cosmos Explorer" },
+      { property: "og:title", content: "Cosmos Explorer — Interactive Space Learning" },
+      { property: "og:description", content: "Fly through a 3D solar system, click any planet, and journey from Earth to the edge of the observable universe." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
