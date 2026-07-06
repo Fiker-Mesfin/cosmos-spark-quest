@@ -3,22 +3,41 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { OBJECTS, type ObjectCategory } from "@/lib/space-data";
+// Import both arrays from your space data file
+import { OBJECTS, PLANETS, type ObjectCategory } from "@/lib/space-data";
 
 export const Route = createFileRoute("/explore")({
   head: () => ({
     meta: [
       { title: "Space Encyclopedia — Cosmos Explorer" },
-      { name: "description", content: "Deep space objects explained — black holes, galaxies, nebulae, pulsars, quasars, comets and exoplanets." },
+      {
+        name: "description",
+        content:
+          "Deep space objects explained — black holes, galaxies, nebulae, pulsars, quasars, comets and exoplanets.",
+      },
       { property: "og:title", content: "Space Encyclopedia — Cosmos Explorer" },
-      { property: "og:description", content: "Curated pages on every kind of object in the cosmos." },
+      {
+        property: "og:description",
+        content: "Curated pages on every kind of object in the cosmos.",
+      },
     ],
   }),
   component: ExploreLayout,
 });
 
 const categories: (ObjectCategory | "All")[] = [
-  "All", "Star", "Planet", "Dwarf Planet", "Black Hole", "Galaxy", "Nebula", "Asteroid", "Comet", "Exoplanet", "Pulsar", "Quasar",
+  "All",
+  "Star",
+  "Planet",
+  "Dwarf Planet",
+  "Black Hole",
+  "Galaxy",
+  "Nebula",
+  "Asteroid",
+  "Comet",
+  "Exoplanet",
+  "Pulsar",
+  "Quasar",
 ];
 
 function ExploreLayout() {
@@ -38,7 +57,27 @@ function ExploreLayout() {
 
 function ExploreIndex() {
   const [filter, setFilter] = useState<ObjectCategory | "All">("All");
-  const items = filter === "All" ? OBJECTS : OBJECTS.filter((o) => o.category === filter);
+
+  // 1. Transform the planet data array so it matches the card preview layout structure
+  const mappedPlanets = PLANETS.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    category: "Planet" as ObjectCategory, // Enforce type compatibility
+    tagline: p.tagline,
+    color: p.color,
+    // Provide default fallbacks just in case layout attributes differ slightly
+    facts: p.facts || [],
+    formation: "",
+    composition: "",
+    discoveries: "",
+    sizeComparison: "",
+  }));
+
+  // 2. Combine deep space objects and planets together into a unified roster
+  const allItems = [...OBJECTS, ...mappedPlanets];
+
+  // 3. Filter using the complete, unified cosmic roster
+  const items = filter === "All" ? allItems : allItems.filter((o) => o.category === filter);
 
   return (
     <div className="min-h-screen bg-void text-foreground">
@@ -59,7 +98,8 @@ function ExploreIndex() {
               <span className="bg-cosmic-gradient bg-clip-text text-transparent">cosmos</span>
             </h1>
             <p className="mt-5 text-lg text-muted-foreground">
-              From the Sun to the farthest quasar — curated facts, formation stories, composition, and stunning scale comparisons.
+              From the Sun to the farthest quasar — curated facts, formation stories, composition,
+              and stunning scale comparisons.
             </p>
           </motion.div>
 

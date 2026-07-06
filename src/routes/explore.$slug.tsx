@@ -1,132 +1,149 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { getObject, OBJECTS } from "@/lib/space-data";
+import { motion } from "framer-motion";
+// 1. Import both lookup functions from your space-data
+import { getObject, getPlanet } from "@/lib/space-data";
+
+const urlToBackendMap: Record<string, string> = {
+  blackholes: "blackholes",
+  sun: "the sun",
+  "milky-way": "milky way",
+  andromeda: "andromeda galaxy",
+  "orion-nebula": "orion nebula",
+  halley: "halley's comet",
+  vesta: "4 vesta",
+  "kepler-186f": "kepler-186f",
+  "crab-pulsar": "crab pulsar",
+  "3c-273": "3c 273",
+  "eagle-nebula": "eagle nebula",
+  // Your planet slugs generally match their API names,
+  // but you can add explicit mappings here if your backend uses capitals like "Mercury"
+  mercury: "mercury",
+  venus: "venus",
+  earth: "earth",
+  mars: "mars",
+  jupiter: "jupiter",
+  saturn: "saturn",
+  uranus: "uranus",
+  neptune: "neptune",
+};
 
 export const Route = createFileRoute("/explore/$slug")({
-  loader: ({ params }) => {
-    const object = getObject(params.slug);
-    if (!object) throw notFound();
-    return { object };
+  loader: async ({ params }) => {
+    const backendSlug = urlToBackendMap[params.slug] || params.slug.replace(/-/g, " ");
+    const safeSlug = encodeURIComponent(backendSlug);
+
+    const res = await fetch(`http://localhost:5000/api/space/${safeSlug}`);
+
+    if (!res.ok) throw notFound();
+
+    return { object: await res.json() };
   },
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return { meta: [{ title: "Not found — Cosmos Explorer" }, { name: "robots", content: "noindex" }] };
-    }
-    const o = loaderData.object;
-    return {
-      meta: [
-        { title: `${o.name} — Cosmos Explorer` },
-        { name: "description", content: o.tagline },
-        { property: "og:title", content: `${o.name} — Cosmos Explorer` },
-        { property: "og:description", content: o.tagline },
-      ],
-    };
-  },
-  component: ObjectPage,
-  notFoundComponent: () => (
-    <div className="mx-auto max-w-3xl px-4 py-32 text-center sm:px-6">
-      <h1 className="font-display text-3xl font-bold">Object not found</h1>
-      <p className="mt-3 text-muted-foreground">That page is drifting somewhere in the void.</p>
-      <Link to="/explore" className="mt-6 inline-block text-sm font-semibold text-accent">← Back to encyclopedia</Link>
-    </div>
-  ),
+
+  component: DetailPage,
 });
 
-function ObjectPage() {
+function DetailPage() {
   const { object } = Route.useLoaderData();
-  const related = OBJECTS.filter((o) => o.category === object.category && o.slug !== object.slug).slice(0, 3);
+  const { slug } = Route.useParams();
 
-  const sections = [
-    { title: "Formation", body: object.formation },
-    { title: "Composition", body: object.composition },
-    { title: "Discoveries", body: object.discoveries },
-    { title: "Size comparison", body: object.sizeComparison },
-  ];
+  // 2. Try looking up in OBJECTS first. If undefined, look inside PLANETS!
+  const localObject = getObject(slug) || getPlanet(slug);
 
   return (
-    <main className="relative pt-24">
-      {/* Backdrop glow */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-16 -z-10 h-[500px] opacity-30 blur-3xl"
-        style={{ background: `radial-gradient(ellipse at top, ${object.color}, transparent 60%)` }}
-      />
+    <main className="min-h-screen bg-void text-white pt-24 px-6">
+      <Link to="/explore" className="text-gray-400 flex gap-2">
+        <ArrowLeft /> Back
+      </Link>
 
-      <section className="mx-auto max-w-4xl px-4 sm:px-6">
-        <Link to="/explore" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Encyclopedia
-        </Link>
+      {/* HEADER */}
+      <motion.div className="mt-8 flex gap-8 items-center">
+        <img
+          src={object.image || object.thumbnail}
+          className="w-40 h-40 rounded-full object-cover"
+          alt={object.name || object.title}
+        />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mt-6 flex flex-col items-start gap-6 sm:flex-row sm:items-center"
-        >
-          <div
-            className="h-32 w-32 shrink-0 rounded-full animate-float-slow"
-            style={{
-              background: `radial-gradient(circle at 30% 30%, ${object.color}, #000 85%)`,
-              boxShadow: `0 0 80px -10px ${object.color}`,
-            }}
-          />
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {object.category}
-            </div>
-            <h1 className="mt-2 font-display text-5xl font-bold tracking-tight sm:text-6xl">{object.name}</h1>
-            <p className="mt-4 text-lg text-muted-foreground">{object.tagline}</p>
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-          <h2 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-accent">Key facts</h2>
-          <ul className="mt-5 space-y-3">
-          {object.facts.map((f: string, i: number) => (
-              <li key={i} className="flex gap-3 text-base leading-relaxed text-foreground/90">
-                <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cosmic-gradient" />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
+        <div>
+          <h1 className="text-5xl font-bold">{object.name || object.title}</h1>
+          <p className="text-gray-300 mt-3 max-w-2xl">{object.overview}</p>
         </div>
+      </motion.div>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
-          {sections.map((s) => (
-            <div key={s.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-              <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
-            </div>
+      {/* KEY FACTS */}
+      <section className="mt-12">
+        <h2 className="text-xl text-accent mb-4">Key Facts</h2>
+
+        <ul className="space-y-3">
+          {(localObject?.facts || []).map((fact: string, index: number) => (
+            <li key={index} className="flex gap-3 text-gray-200">
+              <span className="text-accent">•</span>
+              <span>{fact}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      {related.length > 0 && (
-        <section className="mx-auto max-w-4xl px-4 pb-24 sm:px-6">
-          <h2 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">More {object.category.toLowerCase()}s</h2>
-          <div className="mt-5 grid gap-4 sm:grid-cols-3">
-            {related.map((r) => (
-              <Link
-                key={r.slug}
-                to="/explore/$slug"
-                params={{ slug: r.slug }}
-                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-accent/40"
-              >
+      {/* ADDITIONAL DETAILED DATA (Now renders for planets too!) */}
+      {localObject && (
+        <section className="mt-12 space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold text-accent">Formation</h3>
+            <p className="mt-3 text-gray-300 leading-8">{localObject.formation}</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold text-accent">Composition</h3>
+            <p className="mt-3 text-gray-300 leading-8">{localObject.composition}</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold text-accent">Discoveries</h3>
+            <p className="mt-3 text-gray-300 leading-8">{localObject.discoveries}</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold text-accent">Size Comparison</h3>
+            <p className="mt-3 text-gray-300 leading-8">{localObject.sizeComparison}</p>
+          </div>
+        </section>
+      )}
+
+      {/* YOUTUBE VIDEOS */}
+      {object.videos?.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-accent mb-6">Related Videos</h2>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            {object.videos.map(
+              (
+                video: {
+                  youtubeId: string;
+                  title: string;
+                  thumbnail: string;
+                  channel: string;
+                },
+                i: number,
+              ) => (
                 <div
-                  className="h-10 w-10 shrink-0 rounded-full"
-                  style={{
-                    background: `radial-gradient(circle at 30% 30%, ${r.color}, #000 85%)`,
-                    boxShadow: `0 0 20px ${r.color}80`,
-                  }}
-                />
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold">{r.name}</div>
-                  <div className="truncate text-xs text-muted-foreground">{r.tagline}</div>
+                  key={i}
+                  className="rounded-xl overflow-hidden border border-white/10 bg-white/5"
+                >
+                  <iframe
+                    className="w-full aspect-video"
+                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+
+                  <div className="p-4">
+                    <h3 className="font-semibold text-white">{video.title}</h3>
+                    <p className="text-sm text-gray-400 mt-1">{video.channel}</p>
+                  </div>
                 </div>
-              </Link>
-            ))}
+              ),
+            )}
           </div>
         </section>
       )}

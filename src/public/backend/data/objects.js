@@ -1,0 +1,80 @@
+module.exports = [
+  {
+    slug: "mercury",
+    name: "Mercury",
+    category: "Planet",
+    tagline: "The smallest planet",
+  },
+  {
+    slug: "venus",
+    name: "Venus",
+    category: "Planet",
+    tagline: "Earth's hottest neighbor",
+  },
+  {
+    slug: "earth",
+    name: "Earth",
+    category: "Planet",
+    tagline: "Our home planet",
+  },
+  {
+    slug: "mars",
+    name: "Mars",
+    category: "Planet",
+    tagline: "The Red Planet",
+  },
+  {
+    slug: "jupiter",
+    name: "Jupiter",
+    category: "Planet",
+    tagline: "The largest planet",
+  },
+  {
+    slug: "saturn",
+    name: "Saturn",
+    category: "Planet",
+    tagline: "The ringed giant",
+  },
+  {
+    slug: "uranus",
+    name: "Uranus",
+    category: "Planet",
+    tagline: "The sideways planet",
+  },
+  {
+    slug: "neptune",
+    name: "Neptune",
+    category: "Planet",
+    tagline: "The windiest planet",
+  },
+  {
+    slug: "sun",
+    name: "Sun",
+    category: "Star",
+    tagline: "The heart of our Solar System",
+  },
+  {
+    slug: "black-hole",
+    name: "Black Hole",
+    category: "Black Hole",
+    tagline: "Where gravity wins",
+  },
+  {
+    slug: "milky-way",
+    name: "Milky Way",
+    category: "Galaxy",
+    tagline: "Our home galaxy",
+  },
+  {
+    slug: "andromeda",
+    name: "Andromeda Galaxy",
+    category: "Galaxy",
+    tagline: "Our nearest giant galaxy",
+  },
+  {
+    slug: "orion-nebula",
+    name: "Orion Nebula",
+    category: "Nebula",
+    tagline: "A stellar nursery",
+  },
+];

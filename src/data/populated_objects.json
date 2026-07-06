@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "sun",
+    "name": "Sun",
+    "category": "Star",
+    "color": "#ffb347",
+    "tagline": "Database timeout.",
+    "facts": []
+  },
+  {
+    "slug": "crab-pulsar",
+    "name": "Crab Pulsar",
+    "category": "Pulsar",
+    "color": "#67e8f9",
+    "tagline": "Database timeout.",
+    "facts": []
+  },
+  {
+    "slug": "3c-273",
+    "name": "3C 273",
+    "category": "Quasar",
+    "color": "#fbbf24",
+    "tagline": "Database timeout.",
+    "facts": []
+  },
+  {
+    "slug": "orion-nebula",
+    "name": "M 42",
+    "category": "Nebula",
+    "color": "#f472b6",
+    "tagline": "Database timeout.",
+    "facts": []
+  }
+]

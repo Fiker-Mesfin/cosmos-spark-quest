@@ -1,0 +1,48 @@
+[
+  {
+    "slug": "sun",
+    "name": "The Sun",
+    "category": "Star",
+    "color": "#ffb347",
+    "tagline": "Star at the centre of the Solar System",
+    "facts": [
+      "The Sun is the star located at the centre of the Solar System.",
+      "It is a massive sphere of hot plasma, heated to incandescence by nuclear fusion reactions in its core, radiating the energy from its surface mainly as visible light and infrared radiation with 10% at ultraviolet energies.",
+      "It is the main source of energy for life on Earth."
+    ],
+    "formation": "Dynamically extracted via archive streams. Review source documentation.",
+    "composition": "Spectroscopic composition available in secondary lookup engines.",
+    "discoveries": "Historical record verified by space-observatory networks.",
+    "sizeComparison": "Scale metrics computed relative to standard astronomical units (AU)."
+  },
+  {
+    "slug": "milky-way",
+    "name": "The Milky Way",
+    "category": "Galaxy",
+    "color": "#a78bfa",
+    "tagline": "Galaxy containing the Solar System",
+    "facts": [
+      "The Milky Way or Milky Way Galaxy, or simply the Galaxy, is the galaxy that includes the Solar System, with the name describing the galaxy's appearance from Earth: a hazy band of light seen in the night sky formed from stars in other arms of the galaxy, which are so far away that they cannot be individually distinguished by the naked eye."
+    ],
+    "formation": "Dynamically extracted via archive streams. Review source documentation.",
+    "composition": "Spectroscopic composition available in secondary lookup engines.",
+    "discoveries": "Historical record verified by space-observatory networks.",
+    "sizeComparison": "Scale metrics computed relative to standard astronomical units (AU)."
+  },
+  {
+    "slug": "orion-nebula",
+    "name": "Orion Nebula",
+    "category": "Nebula",
+    "color": "#f472b6",
+    "tagline": "Diffuse nebula in the constellation Orion",
+    "facts": [
+      "The Orion Nebula is a diffuse nebula in the Milky Way situated south of Orion's Belt in the constellation of Orion, and is known as the middle \"star\" in the \"sword\" of Orion.",
+      "It is one of the brightest nebulae and is visible to the naked eye in the night sky with an apparent magnitude of 4.0.",
+      "It is 1,267.0 ± 5.4 light-years (388.5 ± 1.7 pc) away and is the closest region of massive star formation to Earth."
+    ],
+    "formation": "Dynamically extracted via archive streams. Review source documentation.",
+    "composition": "Spectroscopic composition available in secondary lookup engines.",
+    "discoveries": "Historical record verified by space-observatory networks.",
+    "sizeComparison": "Scale metrics computed relative to standard astronomical units (AU)."
+  }
+]
