@@ -108,21 +108,7 @@ http://localhost:5173
 
 ---
 
-## 📸 Screenshots
 
-Add screenshots here.
-
-```
-Home Page
-
-Explore Page
-
-Object Details
-
-Search
-```
-
----
 
 ## 🌠 Current Space Categories
 
